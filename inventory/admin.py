@@ -4,8 +4,23 @@ from . models import Product
 
 # admin.site.register(Product)
 
+
+class ReadOnlyMixin:
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        return True
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_view_permission(self, request, obj=None):
+        return True
+
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ReadOnlyMixin, admin.ModelAdmin):
     list_display = ("name", )
 
     # def get_form(self, request, obj=None, **kwargs):
@@ -17,14 +32,16 @@ class ProductAdmin(admin.ModelAdmin):
     #     return form
 
 
-    def has_add_permission(self, request):
-        return False
+
+    ## This should be implemented without the get_form above ##
+    # def has_add_permission(self, request):
+    #     return False
     
-    def has_change_permission(self, request, obj=None):
-        return False
+    # def has_change_permission(self, request, obj=None):
+    #     return False
     
-    def has_delete_permission(self, request, obj=None):
-        return False
+    # def has_delete_permission(self, request, obj=None):
+    #     return False
     
-    def has_view_permission(self, request, obj=None):
-        return True
+    # def has_view_permission(self, request, obj=None):
+    #     return True
